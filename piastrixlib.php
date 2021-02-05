@@ -435,7 +435,7 @@ class PiastrixClient {
             $this->check_extra_fields_keys($extra_fields, $form_data);
             $form_data = array_merge($form_data, $extra_fields);
         }
-        $this->sign($req_dict, $req_fields);
+        $this->sign($form_data, $req_fields);
         $url = "https://pay.piastrix.com/$lang/pay";
         return [$form_data, $url];
     }
