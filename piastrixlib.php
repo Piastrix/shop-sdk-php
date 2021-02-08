@@ -90,8 +90,8 @@ class PiastrixClient {
             throw new PiastrixClientException('IP address is not in allowed IP addresses',
             PiastrixErrorCode::$IpError);
         }
-        $required_fields = array_keys(array_filter($a, function($v, $k) {
-            return in_array($v, ['', NULL]);
+        $required_fields = array_keys(array_filter($request_data, function($v, $k) {
+            return !in_array($v, ['', NULL]);
         }, ARRAY_FILTER_USE_BOTH));
         $this->sign($request_data, $required_fields);
         if ($sign !== $request_data['sign']) {
