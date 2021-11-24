@@ -50,6 +50,7 @@ class PiastrixClient {
         curl_setopt($ch, CURLOPT_POSTFIELDS, json_encode($req_dict));
         curl_setopt($ch, CURLOPT_HTTPHEADER, array('Content-Type:application/json'));
         curl_setopt($ch, CURLOPT_TIMEOUT, $this->timeout);
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
         return curl_exec($ch);
     }
 
