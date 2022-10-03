@@ -50,6 +50,7 @@ class PiastrixClient {
         curl_setopt($ch, CURLOPT_POSTFIELDS, json_encode($req_dict));
         curl_setopt($ch, CURLOPT_HTTPHEADER, array('Content-Type:application/json'));
         curl_setopt($ch, CURLOPT_TIMEOUT, $this->timeout);
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
         return curl_exec($ch);
     }
 
@@ -90,8 +91,8 @@ class PiastrixClient {
             throw new PiastrixClientException('IP address is not in allowed IP addresses',
             PiastrixErrorCode::$IpError);
         }
-        $required_fields = array_keys(array_filter($a, function($v, $k) {
-            return in_array($v, ['', NULL]);
+        $required_fields = array_keys(array_filter($request_data, function($v, $k) {
+            return !in_array($v, ['', NULL]);
         }, ARRAY_FILTER_USE_BOTH));
         $this->sign($request_data, $required_fields);
         if ($sign !== $request_data['sign']) {
@@ -435,7 +436,7 @@ class PiastrixClient {
             $this->check_extra_fields_keys($extra_fields, $form_data);
             $form_data = array_merge($form_data, $extra_fields);
         }
-        $this->sign($req_dict, $req_fields);
+        $this->sign($form_data, $req_fields);
         $url = "https://pay.piastrix.com/$lang/pay";
         return [$form_data, $url];
     }
